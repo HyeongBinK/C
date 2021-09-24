@@ -1,0 +1,38 @@
+#include<stdio.h>
+#include<conio.h>
+//#include<string.h>
+#define NULL 0
+#define MAX 10
+
+void strcat(char* str, char *str2)
+{
+	int count = 0, count2 = 0;
+
+	while (str[count] != NULL)
+		count++;
+	while (count != MAX - 1)
+	{
+		str[count] = str2[count2];
+		if (str2[count2] == NULL)
+			break;
+		else
+		{
+			count++;
+			count2++;
+		}
+	}
+str[count] = NULL;
+
+}
+
+void main()
+{
+	char str[MAX] = "Hello";
+	char str2[MAX] = "^^^^^^";
+
+	strcat(str, str2);
+
+
+	printf("%s\n", str);
+
+}

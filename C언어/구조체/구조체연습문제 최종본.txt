@@ -1,0 +1,93 @@
+#include<stdio.h>
+#include<conio.h>
+
+#define PEOPLE 5
+#define LONG 10
+
+typedef struct people
+{
+	char Name[LONG];
+	int Age;
+	float Height;
+
+}People;
+
+//typedef struct people People;
+
+void SetPeople(People* P)
+{
+	printf("=================\n");
+	for (int i = 0; i < PEOPLE; i++)
+	{
+		printf("1.이름입력 : ");
+		scanf("%s", P[i].Name);
+		printf("2.나이입력 : ");
+		scanf("%d", &P[i].Age);
+		printf("3.키입력 : ");
+		scanf("%f", &P[i].Height);
+	}
+	printf("=================\n");
+}
+
+void ShowPeople(People *P)
+{
+	
+	printf("=================\n");
+		
+	for (int i = 0; i < PEOPLE; i++)
+	{
+		printf("1.이름 : %s\t", P[i].Name);
+		printf("2.나이 : %d\t", P[i].Age);
+		printf("3.키 : %.2f\n", P[i].Height);
+	}
+	
+	
+	printf("=================\n");
+}
+
+void Temp(People* P, int K)
+{
+	People tmp;
+	tmp = P[K+1];
+	P[K+1] = P[K];
+	P[K] = tmp;
+}
+
+void AscendingOrderPeople(People* P)
+{
+	//People tmp;
+	int K;
+	for (int i = PEOPLE-1; i >0; i--)
+	{
+		for (int j = 0; j < i; j++)
+		{
+			K=j;
+			if (P[j].Age < P[j + 1].Age)
+			Temp(P, K);
+			/*
+			{
+					tmp = P[j];
+					P[j] = P[j + 1];
+					P[j + 1] = tmp;
+			}
+			*/
+			else if (P[j].Age == P[j+1].Age)
+			{
+				if (P[j].Height < P[j + 1].Height)
+					Temp(P, K);
+			}
+		}
+	}
+}
+
+
+void main()
+{
+	People P_List[PEOPLE];
+
+	SetPeople(P_List);
+	AscendingOrderPeople(P_List);
+	ShowPeople(P_List);
+	
+	getch();
+}

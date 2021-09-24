@@ -1,0 +1,436 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
+#include<Windows.h>
+#include<conio.h>
+
+//////////////////////////////////////////////////////
+#define col GetStdHandle(STD_OUTPUT_HANDLE) 
+#define BLACK SetConsoleTextAttribute( col,0x0000 );
+#define DARK_BLUE SetConsoleTextAttribute( col,0x0001 );
+#define GREEN SetConsoleTextAttribute( col,0x0002 );
+#define BLUE_GREEN SetConsoleTextAttribute( col,0x0003 );
+#define BLOOD SetConsoleTextAttribute( col,0x0004 );
+#define PUPPLE SetConsoleTextAttribute( col,0x0005 );
+#define GOLD SetConsoleTextAttribute( col,0x0006 );			//색상 지정
+#define ORIGINAL SetConsoleTextAttribute( col,0x0007 );
+#define GRAY SetConsoleTextAttribute( col,0x0008 );
+#define BLUE SetConsoleTextAttribute( col,0x0009 );
+#define HIGH_GREEN SetConsoleTextAttribute( col,0x000a );
+#define SKY_BLUE SetConsoleTextAttribute( col,0x000b );
+#define RED SetConsoleTextAttribute( col,0x000c );
+#define PLUM SetConsoleTextAttribute( col,0x000d );
+#define YELLOW SetConsoleTextAttribute( col,0x000e );
+//////////////////////////////////////////////////////
+#define TRUE 1
+#define FALSE 0
+#define HEIGHT 30
+#define WIDTH 20
+#define NULL 0
+#define WALL 1
+#define HERO 2
+#define STAR 3
+#define Y 0
+#define X 1 
+#define LEFT 75
+#define RIGHT 77
+#define CONSOLSIZE 256
+#define END 99
+// 출력 난이도
+#define EASY 1
+#define NORMAL 2
+#define HARD 3
+#define HELL 4
+// 속도 난이도
+#define SPEED 10
+#define UPGRADETURM 50
+
+
+void Mapping(int map[HEIGHT][WIDTH], int Hero[2], int Star[2])
+{
+	int Width = (WIDTH * 2) + 1;
+	int Height = HEIGHT + 3;
+	char buf[CONSOLSIZE];
+	sprintf(buf, "mode con: lines=%d cols=%d", Height, Width);
+	system(buf);
+
+	for (int y = 0; y < HEIGHT; y++)
+	{
+		for (int x = 0; x < WIDTH; x++)
+		{
+			if (map[y][x] == HERO)
+			{
+				Hero[X] = x;
+				Hero[Y] = y;
+			}
+			else if (map[y][x] == STAR)
+			{
+				Star[X] = x;
+				Star[Y] = y;
+
+			}
+		}
+	}
+
+}
+
+
+void Draw(int map[HEIGHT][WIDTH], int Score, int Time, int PrintMax)
+{
+	system("cls");
+
+	for (int y = 0; y < HEIGHT; y++)
+	{
+		for (int x = 0; x < WIDTH; x++)
+		{
+			if (map[y][x] == WALL)
+				printf("▩");
+			else if (map[y][x] == HERO)
+			{
+				SKY_BLUE;
+				printf("●");
+				ORIGINAL;
+			}
+
+			else if (map[y][x] == STAR)
+			{
+				GOLD;
+				printf("★");
+				ORIGINAL;
+			}
+			else if (map[y][x] == NULL)
+				printf("  ");
+
+
+		}
+		printf("\n");
+	}
+
+	printf("점수 : %d\n", Score);
+	printf("시간 : %d초\n", Time / 63);
+	printf("한줄에출력되는최대별갯수 : %d", PrintMax);
+	
+}
+
+
+int ScoreUp(int map[HEIGHT][WIDTH], int Star[2], int Score)
+{
+	for (int y = HEIGHT - 1; y >= 0; y--)
+	{
+		for (int x = WIDTH - 1; x >= 0; x--)
+		{
+			if (map[y][x] == STAR)
+			{
+				if (y + 1 > HEIGHT - 1)
+				{
+					map[y][x] = NULL;
+					Score++;
+				}
+			}
+
+		}
+	}
+	return Score;
+}
+
+int Update(int map[HEIGHT][WIDTH], int Star[2], int StarMove)
+{
+	for (int y = HEIGHT - 1; y >= 0; y--)
+	{
+		for (int x = WIDTH - 1; x >= 0; x--)
+		{
+			if (map[y][x] == STAR)
+			{
+				map[y][x] = NULL;
+
+				if (y + 1 <= HEIGHT - 1)
+				{
+					map[y + 1][x] = STAR;
+					StarMove++;
+				}
+
+			}
+		}
+	}
+	return StarMove;
+}
+
+
+
+
+
+void StarMaker(int map[HEIGHT][WIDTH], int Star[2], int PrintMax, int PrintList[WIDTH])
+{
+	int RNum;
+
+
+	for (int i = 0; i < PrintMax; i++)
+	{
+		RNum = rand() % (WIDTH - 2) + 1;
+		PrintList[i] = RNum;
+		map[0][PrintList[i]] = STAR;
+
+	}
+}
+
+
+
+int GameOver(int Score, int Time, int map[HEIGHT][WIDTH], int Hero[2], int Star[2], int Die)
+{
+
+	if (map[Hero[Y]][Hero[X]] == NULL)
+	{
+		system("cls");
+
+		printf("====Game OVER====\n");
+		printf("최종점수 : %d\t", Score);
+		printf("버틴시간 : %d초\n", Time/ 63);
+		system("pause");
+		Die = END;
+
+	}
+
+	return Die;
+}
+
+void Move(int map[HEIGHT][WIDTH], int Hero[2], int Star[2], char ch)
+{
+
+	int LastObjectIndex = NULL;
+	system("cls");
+
+	map[Hero[Y]][Hero[X]] = LastObjectIndex;
+
+	switch (ch)
+	{
+	case LEFT:
+		if (map[Hero[Y]][Hero[X] - 1] != WALL && map[Hero[Y]][Hero[X] - 1] != STAR)
+			Hero[X]--;
+		break;
+	case RIGHT:
+		if (map[Hero[Y]][Hero[X] + 1] != WALL && map[Hero[Y]][Hero[X] + 1] != STAR)
+			Hero[X]++;
+		break;
+
+	}
+
+	LastObjectIndex = map[Hero[Y]][Hero[X]];
+	map[Hero[Y]][Hero[X]] = HERO;
+
+
+}
+
+int SpeedUping(int Score, int Speed, int PrintMax)
+{
+	if (Speed > 1)
+		Speed--;
+
+	return  Speed;
+}
+
+void Menu()
+{
+	system("cls");
+	printf("====별똥별 피하기 게임====\n");
+	printf("1. 게임시작\n");
+	printf("2. 난이도 조절\n");
+	printf("3. 종료\n");
+}
+
+
+int Menu2(int PrintMax)
+{
+	int Select2;
+	int Return = 0;
+	while (TRUE)
+	{
+		system("cls");
+
+		printf("현재 난이도 :");
+		if (PrintMax == EASY)
+			printf("EASY\n");
+		if (PrintMax == NORMAL)
+			printf("NORMAL\n");
+		if (PrintMax == HARD)
+			printf("HARD\n");
+		if (PrintMax == HELL)
+			printf("HELL\n");
+
+
+		printf("====난이도 조절====\n");
+		printf("1. EASY\n");
+		printf("2. NORMAL\n");
+		printf("3. HARD\n");
+		printf("4. HELL\n");
+		printf("5. 돌아가기\n");
+		printf("입력 :");
+
+		scanf("%d", &Select2);
+
+		switch (Select2)
+		{
+		case 1:
+			PrintMax = EASY;
+			break;
+		case 2:
+			PrintMax = NORMAL;
+			break;
+		case 3:
+			PrintMax = HARD;
+			break;
+		case 4:
+			PrintMax = HELL;
+			break;
+		case 5:
+			Return = END;
+			break;
+		}
+
+		if (Return == END)
+			break;
+
+	}
+	return PrintMax;
+}
+
+void main()
+{
+	int Hero[2], Star[2];
+	int PrintList[WIDTH] = { NULL };
+	int Score = 0;
+	int Select;
+	int map[HEIGHT][WIDTH] = { NULL };
+	char ch;
+	int Createcount;
+	int Updatecount;
+	int Num = 0;
+	int Time;
+	int Die = 0;
+	int HeroMove = 0; //영웅이동시 값변경 
+	int StarMake = 0; //별생성시 값변경 
+	int StarMove = 0; //별이동시 값변경
+	int Memo = 0; //스코어값 중간 기억
+	int Speed = SPEED;
+	int PrintMax = EASY;
+	
+	srand((unsigned)time(NULL));
+
+
+	while (1)
+	{
+
+		system("cls");
+
+		Menu();
+		scanf("%d", &Select);
+		switch (Select)
+		{
+		case 1:
+
+			for (int y = 0; y < HEIGHT; y++)
+			{
+				for (int x = 0; x < WIDTH; x++)
+				{
+					map[y][x] = NULL;
+				}
+			}
+
+
+			for (int y = 0; y < HEIGHT; y++)
+			{
+				for (int x = 0; x < WIDTH; x++)
+				{
+					if (x == 9 && y == HEIGHT - 1)
+						map[y][x] = HERO;
+					else if (x == 0 || x == WIDTH - 1)
+						map[y][x] = WALL;
+					else NULL;
+				}
+			}
+
+			Mapping(map, Hero, Star);
+
+			Die = 0;
+			Score = 0;
+			Time = 0;
+			Createcount = 0;
+			Updatecount = 0;
+			Speed = SPEED;
+
+			while (TRUE)
+			{
+
+				if (Createcount == Speed)
+				{
+					StarMaker(map, Star, PrintMax, PrintList);
+					Createcount = 0;
+					StarMake++;
+				}
+
+				if (kbhit())
+				{
+					ch = getch();
+					if (ch == RIGHT || ch == LEFT)
+					{
+						Move(map, Hero, Star, ch);
+						HeroMove++;
+					}
+				}
+
+				
+
+				if (Updatecount == Speed)
+				{
+
+					StarMove = Update(map, Star, StarMove);
+					Score = ScoreUp(map, Star, Score);
+
+						if (Score % UPGRADETURM <= HELL - 1 )
+						{
+							if (Memo / UPGRADETURM != Score / UPGRADETURM)
+							{
+								Memo = Score;
+								Speed = SpeedUping(Score, Speed, PrintMax);
+								
+							}
+							
+						}
+						
+
+					Updatecount = 0;
+				}
+				
+				
+
+
+				Sleep(10);
+
+				if (HeroMove != 0 || StarMake != 0 || StarMove != 0)
+				{
+					Draw(map, Score, Time, PrintMax);
+					HeroMove = 0;
+					StarMake = 0;
+					StarMove = 0;
+				}
+
+				Die = GameOver(Score, Time, map, Hero, Star, Die);
+
+
+				Createcount++;
+				Updatecount++;
+				Time++;
+
+				if (Die == END)
+					break;
+			}
+			break;
+
+		case 2:
+			PrintMax = Menu2(PrintMax);
+
+			break;
+		case 3:
+			return;
+		}
+	}
+}

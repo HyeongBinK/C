@@ -1,0 +1,207 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<Windows.h>
+#include<conio.h>
+
+#define MAX 100 //최대학생수 
+#define MAXNAME 20 //학생이름최대바이트수
+#define GENDER 10 //성별최대바이트수
+#define MAXCLASS 5 // 최대고학년
+#define PASS 100
+#define ERROR 99
+#define BLOCK 0
+#define TRUE 0
+
+typedef struct  student
+{
+	char Name[MAXNAME];
+	int Age;
+	char Gender[GENDER];
+	int Class;
+	int Number;
+}Student;
+
+//목록선택창코드
+void Menu(int StudentCount)
+{
+	system("cls");
+	printf("=====학생관리프로그램(총 인원 : %d)=====\n", StudentCount);
+	printf("===========================================\n");
+	printf("1.학생 등록\n");
+	printf("2.학생 목록<번호순>\n");
+	printf("3.학생 목록<학년순>\n");
+	printf("4.학년별 학생 검색\n");
+	printf("5.학생 검색\n");
+	printf("6.마지막 학생 삭제\n");
+	printf("7.학생전체리스트 삭제\n");
+	printf("8.종료\n");
+	printf("===========================================\n");
+	printf("입력 :");
+}
+
+//예외처리코드(학생입력수 초과)
+void Error(int StudentCount, int* ErrorNum)
+{
+	if (StudentCount + 1 >= MAX)
+	{
+		system("cls");
+		printf("=====학생정원(%d명)이 가득 찼습니다=====\n", MAX);
+		system("pause");
+		*ErrorNum = ERROR;
+	}
+}
+
+//학생등록 입력코드
+void SetStudent(Student* S_L, int *StudentCount) //S_L은 Student_List의 줄임표시
+{
+	int ErrorCode = BLOCK;
+
+	system("cls");
+	S_L->Number = ++(*StudentCount);
+	printf("=====%d번 학생=====\n", *StudentCount);
+	printf("이름 입력 : ");
+	scanf("%s", S_L->Name);
+	printf("나이 입력 : ");
+	scanf("%d", &S_L->Age);
+	printf("성별 입력 : ");
+	scanf("%s", S_L->Gender);
+	while (ErrorCode == BLOCK)
+	{
+		printf("학년 입력<1~%d>: ", MAXCLASS);
+		scanf("%d", &S_L->Class);
+		if (S_L->Class <= MAXCLASS && S_L->Class >= 1)
+		ErrorCode = PASS;
+		else
+		{
+			printf("학년 범위 잘못 입력<범위1~%d학년>\n", MAXCLASS);
+			system("pause");
+		}
+	}
+}
+
+//학생목록 출력코드
+void ShowStudent(Student* S_L)
+{
+	printf("===============%s학생(%d번)===============\n", S_L->Name, S_L->Number);
+	printf("나이 : %d\t", S_L->Age);
+	printf("성별 : %s\t", S_L->Gender);
+	printf("학년 : %d\n", S_L->Class);
+	printf("========================================\n");
+}
+
+//학년목록출력코드
+void ShowClass(Student** Student_List, int Select2, int StudentCount)
+{
+	printf("★★★★★★★★  %d 학년  ★★★★★★★★\n", Select2);
+	for (int i = 0; i < StudentCount; i++)
+	{
+		if (Student_List[i]->Class == Select2)
+			ShowStudent(Student_List[i]);
+	}
+	printf("★★★★★★★★★★★★★★★★★★★★★\n");
+	system("pause");
+}
+
+
+//마지막학생삭제
+//학생전체삭제
+//종료
+
+
+void main()
+{
+	Student* Student_List[MAX];
+	int Select, Select2, StudentCount = 0, ErrorNum=0;
+	char SearchName[MAXNAME];
+	int Memo;
+
+	while (1)
+	{
+		system("cls");
+		Menu(StudentCount);
+		scanf("%d", &Select);
+		
+		switch (Select)
+		{
+		case 1:
+			Error(StudentCount, &ErrorNum);
+			if (ErrorNum == ERROR)
+				break;
+			Student_List[StudentCount] = (Student*)malloc(sizeof(Student));
+			SetStudent(Student_List[StudentCount], &StudentCount);
+			break;
+		case 2:
+			system("cls");
+			for(int i=0; i<StudentCount; i++)
+			ShowStudent(Student_List[i]);
+			system("pause");
+			break;
+		case 3:
+			system("cls");
+			for (int j = MAXCLASS; j >= 1; j--)
+			{
+				for (int i = 0; i < StudentCount; i++)
+				{
+					if (Student_List[i]->Class == j)
+						ShowStudent(Student_List[i]);
+				}
+			}
+			system("pause");
+			break;
+		case 4:
+			system("cls");
+			printf("검색할 학년 입력<1~5> :");
+			scanf("%d", &Select2);
+			switch (Select2)
+			{
+			case 1:
+				ShowClass(Student_List, Select2, StudentCount);
+				break;
+			case 2:
+				ShowClass(Student_List, Select2, StudentCount);
+				break;
+			case 3:
+				ShowClass(Student_List, Select2, StudentCount);
+				break; 
+			case 4:
+				ShowClass(Student_List, Select2, StudentCount);
+				break;
+			case 5:
+				ShowClass(Student_List, Select2, StudentCount);
+				break;
+			}
+			break;
+		case 5:
+			system("cls");
+			printf("검색할 이름 입력 :");
+			scanf("%s", SearchName);
+			for (int i = 0; i < StudentCount; i++)
+			{
+				if (strcmp((Student_List[i]->Name),  SearchName) == TRUE)
+					ShowStudent(Student_List[i]);
+			}
+			system("pause");
+			break;
+		case 6:
+			Memo = StudentCount;
+			--StudentCount;
+			free(Student_List[Memo-1]);
+			break;
+		case 7:
+			Memo = StudentCount;
+			StudentCount = 0;
+			for (int i = 0; i < Memo; i++)
+			{
+				free(Student_List[i]);
+			}
+			break;
+		case 8:
+			for (int i = 0; i < StudentCount; i++)
+			{
+				free(Student_List[i]);
+			}
+			return;
+		}
+	}
+}

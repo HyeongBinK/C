@@ -1,0 +1,30 @@
+#include<stdio.h>
+#include<conio.h>
+#include<iostream>
+#define SIZE 10
+
+void main()
+{
+	int Array[SIZE], sum = 0, max;
+	float avg = 0.000f;
+
+	for (int i = 0; i < 10; i++)
+	{
+		printf("[%d]번쨰 정수 입력:", i + 1);
+		scanf("%d", &Array[i]);
+
+		sum += Array[i];
+
+		if(i == 0)
+		max = Array[i];
+
+		else if (Array[i] > max)
+			max = Array[i];
+		
+	}
+
+	avg = sum / 10.000f;
+
+	printf("최대값 = %d\t 총합 = %d\t 평균 = %0.3f", max, sum, avg);
+	getch();
+}

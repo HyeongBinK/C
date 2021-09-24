@@ -1,0 +1,4 @@
+﻿  MainSource.cpp
+c:\users\b-03\documents\visual studio 2015\projects\stl_container_practice\stl_container_practice\mainsource.cpp(48): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+  Stl_Container_Practice.vcxproj -> C:\Users\B-03\documents\visual studio 2015\Projects\Stl_Container_Practice\Debug\Stl_Container_Practice.exe
+  Stl_Container_Practice.vcxproj -> C:\Users\B-03\documents\visual studio 2015\Projects\Stl_Container_Practice\Debug\Stl_Container_Practice.pdb (Partial PDB)

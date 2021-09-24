@@ -1,0 +1,99 @@
+#include<stdio.h>
+#include<conio.h>
+
+int WhoisBig(int x, int y)
+{
+	if (x > y)
+		return x;
+	else
+		return y;
+}
+
+int Holjjak(int Num)
+{
+	if (Num % 2 == 0)
+		return 1;
+	else
+		return 0;
+}
+
+int Juldaegap(int Num)
+{
+	if (Num < 0)
+		return -Num;
+	else
+		return Num;
+}
+
+int Samyeebaesuprint(int Num)
+{
+	if (Num % 3 == 0)
+			return Num;
+}
+
+int GuGGuRo(int Num)
+{
+if (Num > 10)
+return Num % 10;
+}
+
+void main()
+{
+	int a, b;
+	printf("두수를 입력하시오 :");
+	scanf("%d%d", &a, &b);
+	int WhoisBig(int a, int b);
+	printf("%d와 %d중 큰 수는 %d 입니다.\n", a, b, WhoisBig(a, b));
+	getch();
+	a = 0;
+	printf("정수 하나를 입력하시오 :");
+	scanf("%d", &a);
+	int Holjjak(int a);
+	if (Holjjak(a) == 0)
+		printf("%d는 홀수 입니다\n", a);
+	else 
+		printf("%d는 짝수 입니다\n", a);
+	getch();
+	a = 0;
+	printf("정수 하나를 입력하시오 :");
+	scanf("%d", &a);
+	int Juldaegap(int a);
+	printf("%d의 절대값 : %d\n", a, Juldaegap(a));
+	getch();
+	a = 0;
+	printf("정수 하나를 입력하시오 :");
+	scanf("%d", &a);
+	int Samyeebaesuprint(int a);
+	for (int i = 1; i <= a; i++)
+	{
+		if (i == Samyeebaesuprint(i) && i / 3 != a / 3)
+		printf("%d,", i);
+		else if(i == Samyeebaesuprint(i) && i / 3 == a / 3)
+		printf("%d\n", i);
+	}
+	getch();
+	a = 0;
+	printf("정수 하나를 입력하시오 :");
+	scanf("%d", &a);
+	int GuGGuRo(int a);
+	while (1)
+	{
+		if (a > 10)
+		{
+			printf("%d", GuGGuRo(a));
+			a = a / 10;
+		}
+		else
+		{
+			printf("%d", a);
+			break;
+		}
+	}
+	getch();
+}
+
+
+
+
+
+

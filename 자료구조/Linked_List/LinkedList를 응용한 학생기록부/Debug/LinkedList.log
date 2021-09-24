@@ -1,0 +1,4 @@
+﻿  mainsource.cpp
+c:\users\b-03\documents\visual studio 2015\projects\linkedlist\linkedlist\mainsource.cpp(98): warning C4715: 'SearchNextLink': 모든 제어 경로에서 값을 반환하지는 않습니다.
+  LinkedList.vcxproj -> C:\Users\B-03\documents\visual studio 2015\Projects\LinkedList\Debug\LinkedList.exe
+  LinkedList.vcxproj -> C:\Users\B-03\documents\visual studio 2015\Projects\LinkedList\Debug\LinkedList.pdb (Full PDB)

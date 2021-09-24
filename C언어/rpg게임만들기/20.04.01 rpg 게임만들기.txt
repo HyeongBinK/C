@@ -1,0 +1,645 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<Windows.h>
+#include<string.h>
+#include<conio.h>
+#include<time.h>
+
+//////////////////////////////////////////////////////
+#define col GetStdHandle(STD_OUTPUT_HANDLE) 
+#define BLACK SetConsoleTextAttribute( col,0x0000 );
+#define DARK_BLUE SetConsoleTextAttribute( col,0x0001 );
+#define GREEN SetConsoleTextAttribute( col,0x0002 );
+#define BLUE_GREEN SetConsoleTextAttribute( col,0x0003 );
+#define BLOOD SetConsoleTextAttribute( col,0x0004 );
+#define PUPPLE SetConsoleTextAttribute( col,0x0005 );
+#define GOLD SetConsoleTextAttribute( col,0x0006 );			//색상 지정
+#define ORIGINAL SetConsoleTextAttribute( col,0x0007 );
+#define GRAY SetConsoleTextAttribute( col,0x0008 );
+#define BLUE SetConsoleTextAttribute( col,0x0009 );
+#define HIGH_GREEN SetConsoleTextAttribute( col,0x000a );
+#define SKY_BLUE SetConsoleTextAttribute( col,0x000b );
+#define RED SetConsoleTextAttribute( col,0x000c );
+#define PLUM SetConsoleTextAttribute( col,0x000d );
+#define YELLOW SetConsoleTextAttribute( col,0x000e );
+//////////////////////////////////////////////////////
+
+#define NAMEMAX 20 //캐릭터&몬스터&직업군 이름최대길이
+#define CIVILIAN 10 
+#define WORRIOR 11
+#define TANKER 12
+#define ERROR 99
+#define SAFE 0
+#define CONTINUE 0
+#define END 100
+#define RETURN 101
+#define SLOTMAX 10
+
+typedef struct Status
+{
+	char Name[NAMEMAX];
+	int Level; //초기값부여
+	int Atk;
+	int Hp;
+	int HpMax;
+	int Def;
+	int Exp;
+}Status;
+
+typedef struct Character
+{
+	Status Status;
+	int JobCase;
+	
+}Character;
+
+typedef struct Monster
+{
+	Status Status;
+	int GetExp;
+}Monster;
+
+void SetCharacterName(Character* A)
+{
+	printf("플레이어 이름 입력 : ");
+	scanf("%s", A->Status.Name);
+}
+
+void CivilianLevelUp(Character* A) //기본 직업군
+{
+	A->Status.Level++;
+	A->Status.Atk += 5;
+	A->Status.HpMax += 7;
+	A->Status.Hp = A->Status.HpMax;
+	A->Status.Def += 2;
+	A->Status.Exp = 0;
+}
+
+void WorriorLevelUp(Character* A) // 전사 직업군 
+{
+	A->Status.Level++;
+	A->Status.Atk += 7;
+	A->Status.HpMax += 10;
+	A->Status.Hp = A->Status.HpMax;
+	A->Status.Def += 3;
+	A->Status.Exp = 0;
+}
+
+void TankerLevelUp(Character* A) // 탱커 직업군
+{
+	A->Status.Level++;
+	A->Status.Atk += 4;
+	A->Status.HpMax += 15;
+	A->Status.Hp = A->Status.HpMax;
+	A->Status.Def += 10;
+	A->Status.Exp = 0;
+}
+
+void MonsterLevelUp(Monster M_L[], int Num)
+{
+	M_L[Num].Status.Level++;
+	M_L[Num].Status.Atk += 3;
+	M_L[Num].Status.HpMax += 10;
+	M_L[Num].Status.Hp = M_L[Num].Status.HpMax;
+	M_L[Num].Status.Def += 5;
+	M_L[Num].GetExp += 10;
+	M_L[Num].Status.Exp = 0;
+
+}
+
+void StartMenu()
+{
+	system("cls");
+	printf("========DunGeonGame========\n");
+	printf("1.새로운모험시작\n");
+	printf("2.저장된데이터불러오기\n");
+	printf("3.종료\n");
+	printf("선택 : ");
+}
+
+void BagicMenu() // 기본선택창
+{
+	system("cls");
+	printf("========DunGeonGame========\n");
+	printf("1.던전입장\n");
+	printf("2.캐릭터정보\n");
+	printf("3.저장\n");
+	printf("4.이어하기\n");
+	printf("5.몬스터정보\n");
+	printf("6.종료\n");
+	printf("선택 : ");
+}
+
+void DungeonSelectMenu(Monster* M_L, int MonsterMax)
+{
+	system("cls");
+	printf("=======던전 입구=======\n");
+	for (int i = 0; i < MonsterMax; i++)
+	{
+		printf("%d층던전 : [%s]\n", i + 1, M_L[i].Status.Name);
+	}
+	printf("%d.돌아가기\n", MonsterMax + 1);
+	printf("선택 :");
+
+}
+void DataSave(Character A, Monster* Monster_List, int MonsterMax)
+{
+	int SlotSelect = 0;
+	char ch;
+	char buf[20];
+	char str[20] = "CharacterData.txt";
+	char str2[20] = "MonsterData.txt";
+
+	FILE* f;
+
+	printf("=====Save=====\n");
+	for (int i = 1; i <= SLOTMAX; i++)
+	{
+		sprintf(buf, "%d%s", i, str);
+		f = fopen(buf, "r");
+		if (f == NULL)
+			ch = 'x';
+		else
+			ch = 'o';
+		printf("%d번슬롯 : <파일여부 : %c>\n", i, ch);
+	}
+	printf("선택 : ");
+	scanf("%d", &SlotSelect);
+
+	sprintf(buf, "%d%s", SlotSelect, str);
+	f = fopen(buf, "w");
+	fprintf(f, "%s\n%d %d %d %d %d %d %d\n", A.Status.Name, A.Status.Level, A.Status.Atk, A.Status.Hp, A.Status.HpMax, A.Status.Def, A.JobCase, A.Status.Exp);
+	fclose(f);
+
+	sprintf(buf, "%d%s", SlotSelect, str2);
+	f = fopen(buf, "w");
+
+	fprintf(f, "%d\n", MonsterMax);
+	
+	for (int i = 0; i < MonsterMax; i++)
+	{
+		fprintf(f, "%s\n", Monster_List[i].Status.Name);
+		fprintf(f, "%d ", Monster_List[i].Status.Level);
+		fprintf(f, "%d ", Monster_List[i].Status.Atk);
+		fprintf(f, "%d ", Monster_List[i].Status.Hp);
+		fprintf(f, "%d ", Monster_List[i].Status.HpMax);
+		fprintf(f, "%d ", Monster_List[i].Status.Def);
+		fprintf(f, "%d ", Monster_List[i].Status.Exp);
+		fprintf(f, "%d\n", Monster_List[i].GetExp);
+	}
+	printf("저장 완료!!\n");
+	system("pause");
+	fclose(f);
+}
+void NewGame(Character* A) //새로하기 선택시 캐릭터스테이터스 초기값 불러옴
+{
+	FILE* f;
+	f = fopen("StartStatus.txt", "r");
+
+	fscanf(f, "%d %d %d %d %d %d %d\n", &A->Status.Level, &A->Status.Atk, &A->Status.Hp, &A->Status.HpMax, &A->Status.Def, &A->JobCase, &A->Status.Exp);
+	fclose(f);
+
+}
+
+Monster* MonsterLoad(int* MonsterMax, int* ErrorCode)
+{
+	Monster* Monster_List;
+
+	FILE* f;
+	f = fopen("MonsterData.txt", "r");
+
+	if (f == NULL)
+	{
+		printf("해당 이름의 파일이 존재하지 않습니다\n");
+		system("pause");
+		*ErrorCode = ERROR;
+	}
+
+	else
+	{
+		fscanf(f, "%d\n", &(*MonsterMax));
+		Monster_List = (Monster*)malloc(sizeof(Monster)*  (*MonsterMax));
+		for (int i = 0; i < *MonsterMax; i++)
+		{
+			fscanf(f, "%s\n", Monster_List[i].Status.Name);
+			fscanf(f, "%d ", &Monster_List[i].Status.Level);
+			fscanf(f, "%d ", &Monster_List[i].Status.Atk);
+			fscanf(f, "%d ", &Monster_List[i].Status.Hp);
+			fscanf(f, "%d ", &Monster_List[i].Status.HpMax);
+			fscanf(f, "%d ", &Monster_List[i].Status.Def);
+			fscanf(f, "%d ", &Monster_List[i].Status.Exp);
+			fscanf(f, "%d\n", &Monster_List[i].GetExp);
+		}
+	}
+	fclose(f);
+	return Monster_List;
+}
+
+Monster* MonsterSaveDataLoad(int* MonsterMax, int* ErrorCode, int SlotSelect)
+{
+	Monster* Monster_List;
+
+	char buf[20];
+	char str[20] = "MonsterData.txt";
+	FILE* f;
+
+	sprintf(buf, "%d%s", SlotSelect, str);
+	f = fopen(buf, "r");
+	if (f == NULL)
+	{
+		printf("해당 이름의 파일이 존재하지 않습니다\n");
+		system("pause");
+		*ErrorCode = ERROR;
+	}
+	else
+	{
+		fscanf(f, "%d\n", &(*MonsterMax));
+		Monster_List = (Monster*)malloc(sizeof(Monster)* (*MonsterMax));
+
+		for (int i = 0; i < *MonsterMax; i++)
+		{
+			fscanf(f, "%s\n", Monster_List[i].Status.Name);
+			fscanf(f, "%d ", &Monster_List[i].Status.Level);
+			fscanf(f, "%d ", &Monster_List[i].Status.Atk);
+			fscanf(f, "%d ", &Monster_List[i].Status.Hp);
+			fscanf(f, "%d ", &Monster_List[i].Status.HpMax);
+			fscanf(f, "%d ", &Monster_List[i].Status.Def);
+			fscanf(f, "%d ", &Monster_List[i].Status.Exp);
+			fscanf(f, "%d\n", &Monster_List[i].GetExp);
+		}
+	}
+	fclose(f);
+
+	return Monster_List;
+}
+
+void DataLoad(Character* A, int* ErrorCode, int *SlotSelect)
+{
+
+	char ch;
+	char buf[20];
+	char str[20] = "CharacterData.txt";
+
+	FILE* f;
+	printf("=====Save=====\n");
+	for (int i = 1; i <= SLOTMAX; i++)
+	{
+		sprintf(buf, "%d%s", i, str);
+		f = fopen(buf, "r");
+		if (f == NULL)
+			ch = 'x';
+		else
+			ch = 'o';
+		printf("%d번슬롯 : <파일여부 : %c>\n", i, ch);
+	}
+	printf("%d.돌아가기 :\n", SLOTMAX + 1);
+	printf("선택 : ");
+	scanf("%d", &(*SlotSelect));
+	if (*SlotSelect == SLOTMAX + 1)
+		return;
+	sprintf(buf, "%d%s", *SlotSelect, str);
+	f = fopen(buf, "r");
+	if (f == NULL)
+	{
+		printf("해당 이름의 파일이 존재하지 않습니다\n");
+		*ErrorCode = ERROR;
+		system("pause");
+		return;
+	}
+	fscanf(f, "%s\n%d %d %d %d %d %d %d\n", A->Status.Name, &A->Status.Level, &A->Status.Atk, &A->Status.Hp, &A->Status.HpMax, &A->Status.Def, &A->JobCase, &A->Status.Exp);
+
+	fclose(f);
+	printf("데이터불러오기 완료!!\n");
+	system("pause");
+}
+
+
+void JobChange(Character* A)
+{
+	char tmp[NAMEMAX];
+	int JobSelect;
+	if (A->Status.Level == 10)
+	{
+		while (1)
+		{
+			system("cls");
+			printf("★축하합니다 레밸 10이 되어 전직이 가능합니다★\n");
+			printf("1.전사(물리공격 위주)\n");
+			printf("2.탱커(방어력 위주)\n");
+
+			printf("선택 : ");
+			scanf("%d", &JobSelect);
+			switch (JobSelect)
+			{
+			case 1:
+				A->JobCase = WORRIOR;
+				break;
+			case 2:
+				A->JobCase = TANKER;
+				break;
+			}
+			if (JobSelect != 1 && JobSelect != 2)
+			{
+				printf("1,2중의 숫자만 입력하세요!");
+				system("pause");
+			}
+			else
+				break;
+		}
+
+	}
+}
+
+int NeedExpChange(Character A, int NeedExp)
+{
+	NeedExp = 30 * (A.Status.Level) + (A.Status.Level) * (A.Status.Level);
+	return NeedExp;
+}
+
+int MonsterExpMaxChange(Monster* M_L, int MonsterExpMax)
+{
+	MonsterExpMax = 10 * (M_L->Status.Level);
+	return MonsterExpMax;
+}
+
+void ShowStatus(Character A, int NeedExp)
+{
+	printf("이름 : %s\ ", A.Status.Name);
+	if (A.JobCase == CIVILIAN)
+		printf("직업 : 시민\n");
+	if (A.JobCase == WORRIOR)
+		printf("직업 : 전사\n");
+	if (A.JobCase == TANKER)
+		printf("직업 : 탱커\n");
+	printf("Lv : %d\ ", A.Status.Level);
+	printf("공격력 : %d\ ", A.Status.Atk);
+	printf("Hp : %d/%d\ ", A.Status.Hp, A.Status.HpMax);
+	printf("Def : %d\ ", A.Status.Def);
+	printf("Exp : %d/%d\n", A.Status.Exp, NeedExp);
+
+
+}
+void ShowMonsterStatus(Monster M_L[], int Num, int MonsterExpMax)
+{
+	printf("몬스터 : %s\n", M_L[Num].Status.Name);
+	printf("Lv : %d\ ", M_L[Num].Status.Level);
+	printf("공격력 : %d\ ", M_L[Num].Status.Atk);
+	printf("Hp : %d/%d\ ", M_L[Num].Status.Hp, M_L[Num].Status.HpMax);
+	printf("Def : %d\ ", M_L[Num].Status.Def);
+	printf("죽인사람수 : %d/%d\ ", M_L[Num].Status.Exp, MonsterExpMax);
+	printf("GetExp : %d\n", M_L[Num].GetExp);
+}
+void LevelUp(Character* A, int* NeedExp)
+{
+	while (1)
+	{
+		int  Memo;//레벨업시 경험치 초과량분 
+
+		if (*NeedExp <= A->Status.Exp)
+		{
+			Memo = (A->Status.Exp) - *NeedExp;
+			if (A->JobCase == CIVILIAN)
+				CivilianLevelUp(A);
+			else if (A->JobCase == WORRIOR)
+				WorriorLevelUp(A);
+			else if (A->JobCase == TANKER)
+				TankerLevelUp(A);
+			A->Status.Exp = Memo;
+			JobChange(A);
+		}
+		else
+			break;
+	}
+}
+void GameOver(Character A)
+{
+	printf("체력이 0이 되었습니다.\n");
+	printf("======GAME OVER======\n");
+	system("pause");
+	return;
+}
+void BattleResult(Character* A, Monster* M_L, int* NeedExp, int DungeonSelect, int MonsterSelect, int MonsterDef, int MonsterDammage, int CharacterDef, int CharacterDammage, int* BattleEndCode, int Select, int Memo, int* MonsterExpMax)
+{
+	if (MonsterSelect == 2)
+	{
+		printf("몬스터방어선택!\n");
+		MonsterDammage = 0;
+		MonsterDef = 2 * M_L[DungeonSelect].Status.Def;
+	}
+	if (Select == 1)
+	{
+		if (A->Status.Atk > MonsterDef)
+			CharacterDammage = (A->Status.Atk) - MonsterDef;
+		else
+			CharacterDammage = 1;
+	}
+	if (MonsterSelect == 1)
+	{
+		printf("몬스터공격선택!\n");
+		if (M_L[DungeonSelect].Status.Atk > CharacterDef)
+			MonsterDammage = (M_L[DungeonSelect].Status.Atk) - CharacterDef;
+		else
+			MonsterDammage = 1;
+	}
+
+	printf("몬스터에게 %d의 데미지를 가했다\n", CharacterDammage);
+	printf("몬스터에게서 %d의 데미지를 입었다\n", MonsterDammage);
+	(A->Status.Hp) -= MonsterDammage;
+	(M_L[DungeonSelect].Status.Hp) -= CharacterDammage;
+	system("pause");
+
+	printf("\n");
+	if (A->Status.Hp <= 0)
+	{
+		GameOver(*A);
+		M_L[DungeonSelect].Status.Exp+= A->Status.Level;
+		if (M_L[DungeonSelect].Status.Exp >= *MonsterExpMax)
+			MonsterLevelUp(M_L, DungeonSelect);
+
+
+		*BattleEndCode = END;
+		(A->Status.Hp) = Memo;
+
+	}
+	if ((M_L[DungeonSelect].Status.Hp) <= 0)
+	{
+		printf("[%s]를 쓰러트렸다\n", M_L[DungeonSelect].Status.Name);
+		printf("[%d]만큼의 경험치를 얻었다\n", M_L[DungeonSelect].GetExp);
+		(A->Status.Exp) += (M_L[DungeonSelect].GetExp);
+		printf("전투가 종료되었습니다.\n");
+		printf("초기창으로 돌아갑니다.\n");
+		*BattleEndCode = END;
+		system("pause");
+	}
+}
+
+void MonsterBattle(Character* A, Monster M_L[], int* NeedExp, int DungeonSelect, int* MonsterExpMax)
+{
+	system("cls");
+	int Select = 0;
+	int CharacterDammage = 0, MonsterDammage = 0;
+	int CharacterDef = 0, MonsterDef = 0; //방어선택시 방어력2배 되게끔잠시 변동시켜줄값
+	int MonsterSelect; //랜덤함수로 몬스터 패턴 선택
+	int BattleEndCode = CONTINUE;
+	int Memo = 0; //전투시작전 캐릭터 체력기억
+
+	Memo = (A->Status.Hp);
+
+	while (BattleEndCode != END)
+	{
+		system("cls");
+		ShowStatus(*A, *NeedExp);
+		printf("\n\nTip: 방어 선택시 순간방어력 2배, 도망선택시 초기창으로\n");
+		printf("1.공격 2.방어 3.도망\n\n\n");
+		ShowMonsterStatus(M_L, DungeonSelect, *MonsterExpMax);
+		printf("\n\n");
+		printf("선택 :");
+		CharacterDef = A->Status.Def;
+		MonsterDef = M_L[DungeonSelect].Status.Def;
+		MonsterSelect = (rand() % 2) + 1;
+		scanf("%d", &Select);
+		switch (Select)
+		{
+		case 1:
+			printf("공격선택!\n");
+			BattleResult(A, M_L, NeedExp, DungeonSelect, MonsterSelect, MonsterDef, MonsterDammage, CharacterDef, CharacterDammage, &BattleEndCode, Select, Memo, MonsterExpMax);
+			break;
+		case 2:
+			printf("방어선택!\n");
+			CharacterDammage = 0;
+			CharacterDef = 2 * (A->Status.Def);
+
+			BattleResult(A, M_L, NeedExp, DungeonSelect, MonsterSelect, MonsterDef, MonsterDammage, CharacterDef, CharacterDammage, &BattleEndCode, Select, Memo, MonsterExpMax);
+			break;
+		case 3:
+			return;
+		}
+	}
+	M_L[DungeonSelect].Status.Hp = M_L[DungeonSelect].Status.HpMax;
+}
+
+void GamePlay(Character* A, Monster* Monster_List, int* NeedExp, int DungeonSelect, int *ErrorCode, int BagicSelect, int ReturnCode, int MonsterMax, int* MonsterExpMax, int *SlotSelect)
+{
+	srand((unsigned)time(NULL));
+	if (*ErrorCode == ERROR)
+		ErrorCode = SAFE;
+
+
+
+	while (1)
+	{
+		*NeedExp = NeedExpChange(*A, *NeedExp);
+		*MonsterExpMax = MonsterExpMaxChange(Monster_List, *MonsterExpMax);
+		BagicMenu();
+		scanf("%d", &BagicSelect);
+		switch (BagicSelect)
+		{
+		case 1:
+
+			system("cls");
+			DungeonSelectMenu(Monster_List, MonsterMax);
+			scanf("%d", &DungeonSelect);
+			MonsterBattle(A, Monster_List, NeedExp, DungeonSelect -= 1, MonsterExpMax);
+			LevelUp(A, &*NeedExp);
+
+
+			break;
+		case 2:
+			system("cls");
+			ShowStatus(*A, *NeedExp);
+			system("pause");
+			break;
+		case 3:
+			system("cls");
+			DataSave(*A, Monster_List, MonsterMax);
+			break;
+		case 4:
+			system("cls");
+			free(Monster_List);
+			DataLoad(A, ErrorCode, SlotSelect);
+			Monster_List = MonsterSaveDataLoad(&MonsterMax, ErrorCode, *SlotSelect);
+			ErrorCode = SAFE;
+			break;
+		case 5:
+			system("cls");
+			for (int i = 0; i < MonsterMax; i++)
+			{
+				int Num = i;
+				ShowMonsterStatus(Monster_List, Num, *MonsterExpMax);
+			}
+			system("Pause");
+
+			break;
+		case 6:
+			ReturnCode = RETURN;
+			break;
+		}
+		if (ReturnCode == RETURN)
+		{
+			free(Monster_List);
+			ReturnCode = CONTINUE;
+			break;
+		}
+	}
+}
+
+void main()
+{
+	FILE* f;
+	Character A;
+	Monster* Monster_List = NULL;
+	int StartSelect, BagicSelect = 0, DungeonSelect = 0; // 메뉴 선택코드 
+	int ErrorCode = SAFE; //에러발생시 코드값변경
+	int ReturnCode = CONTINUE; //되돌아가기 선택시 코드값 변경 
+	int NeedExp = 0; //캐릭터가 레밸업 하기위한 경험치량
+	int MonsterExpMax = 0; //몬스터가 레밸업 하기위한 경험치 량 
+	int MonsterMax = 0; //불러올 몬스터 마릿수 기록
+	int SlotSelect = 0; //저장 로드 슬롯선택
+
+		while (1)
+		{
+			StartMenu();
+			scanf("%d", &StartSelect);
+			switch (StartSelect)
+			{
+			case 1:
+				system("cls");
+				SetCharacterName(&A);
+				NewGame(&A);
+				Monster_List = MonsterLoad(&MonsterMax, &ErrorCode);
+				if (ErrorCode == ERROR)
+				{
+					ErrorCode = SAFE;
+					break;
+				}
+				GamePlay(&A, Monster_List, &NeedExp, DungeonSelect, &ErrorCode, BagicSelect, ReturnCode, MonsterMax, &MonsterExpMax, &SlotSelect);
+				break;
+			case 2:
+				system("cls");
+				DataLoad(&A, &ErrorCode, &SlotSelect);
+				Monster_List = MonsterSaveDataLoad(&MonsterMax, &ErrorCode, SlotSelect);
+				if (ErrorCode == ERROR)
+				{
+					system("cls");
+					printf("해당슬롯에 저장된 데이터가 없습니다 처음부터 다시 시작합니다\n");
+					SetCharacterName(&A);
+					NewGame(&A);
+					Monster_List = MonsterLoad(&MonsterMax, &ErrorCode);
+					if (ErrorCode == ERROR)
+					{
+						ErrorCode = SAFE;
+						break;
+					}
+					ErrorCode = SAFE;
+				}
+				GamePlay(&A, Monster_List, &NeedExp, DungeonSelect, &ErrorCode, BagicSelect, ReturnCode, MonsterMax, &MonsterExpMax, &SlotSelect);
+				break;
+			case 3:
+				if (Monster_List != NULL)
+					free(Monster_List);
+				return;
+				
+			}
+		}
+
+	}

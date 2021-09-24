@@ -1,0 +1,21 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<Windows.h>
+#include<conio.h>
+
+
+void main()
+{
+	GuGuDan();
+	FILE* f = fopen("Test.txt", "w");
+	for (int i = 1; i <= 9; i++)
+	{
+		fprintf(f,"====%d´Ü====\n", i);
+		for (int j = 1; j <= 9; j++)
+			fprintf(f,"%d*%d=%d\n", i, j, i*j);
+		fprintf(f,"==========\n");
+	}
+
+	fclose(f);
+}

@@ -1,0 +1,65 @@
+#include<stdio.h>
+#include<conio.h> // 콘손입출력 헤더파일( getch(),putch() )
+#pragma warning(disable : 4996)
+
+//for문 연습문제 1 빈칸채우기
+
+void main()
+{
+	printf("1번문제\n");
+	for (int i = 1; i <= 10; i++)
+	{
+		if (i%2 != 1)
+			continue;
+		printf("%d.안뇽\n", i);
+
+	}
+
+	getch();
+	printf("2번문제\n");
+	for (char ch = 'A'; ch <='Z'; ch++)
+	{
+		printf("%c", ch);
+		
+			
+		if (ch == 'M')
+		{
+			
+			printf("\n");
+			continue;
+		}
+		else if (ch == 'Z')
+		{
+			printf("\n");
+			break;
+		}
+					
+			
+		
+		printf(",");
+
+	}
+
+	getch();
+
+	printf("3번문제\n");
+	int sum = 0;
+	for (int i = 1; i <= 10; i++)
+	{
+		if (i%3==0)
+		{
+			if (i == 9)
+				printf("%d=", i);
+			if(i!=9)
+			printf("%d+", i);
+			sum += i;
+			
+			
+		}
+	}
+	printf("%d", sum);
+
+
+	getch();
+
+}

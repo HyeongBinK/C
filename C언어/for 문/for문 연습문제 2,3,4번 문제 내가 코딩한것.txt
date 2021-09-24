@@ -1,0 +1,64 @@
+#include<stdio.h>
+#include<conio.h> // 
+#pragma warning(disable : 4996)
+
+//for문 연습문제 2번
+
+void main()
+{
+	int a=1, sum=0;
+	
+	for (int i = 1; i <= 30; i++)
+	{
+		
+		sum += a;
+		a = 2 * a;
+		// printf("%d\n", sum);
+
+	}
+	printf("2번문제\n30일 동안 저축한 금액 :%d\n", sum);
+
+
+
+	getch();
+
+	sum = 0;
+
+	for (int i = 1; i <= 1000; i++)
+	{
+		if(i % 3 != 0)
+			sum += i;
+		else if (i % 15 == 0)
+			sum += i;
+
+
+
+	}
+
+	printf("3번문제\n1~1000사이의 합 :%d\n", sum);
+	printf("<3의 배수는 재외하나 3과 5의 공배수는 재외하지않는다>\n");
+
+
+	getch();
+
+	sum = 0;
+	a = 0;
+	for (int i = 1; sum < 10000; i++)
+	{
+		
+
+		if (i % 2 == 1)
+			sum += i;
+		if (sum >= 10000)
+		{
+			sum -= i;
+			break;
+		}
+		
+		a = i; 
+	}
+
+	printf("4번문제\n10000을 넘기 직전의 수\ni:%d\tSum:%d\n", a, sum);
+
+	getch();
+}

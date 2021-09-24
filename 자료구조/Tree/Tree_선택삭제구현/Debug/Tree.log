@@ -1,0 +1,4 @@
+﻿  MainSource.cpp
+c:\users\b-03\documents\visual studio 2015\projects\tree\tree\mainsource.cpp(78): warning C4715: 'SearchParentNode': 모든 제어 경로에서 값을 반환하지는 않습니다.
+  Tree.vcxproj -> C:\Users\B-03\documents\visual studio 2015\Projects\Tree\Debug\Tree.exe
+  Tree.vcxproj -> C:\Users\B-03\documents\visual studio 2015\Projects\Tree\Debug\Tree.pdb (Partial PDB)

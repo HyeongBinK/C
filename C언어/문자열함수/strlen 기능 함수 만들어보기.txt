@@ -1,0 +1,22 @@
+include<stdio.h>
+#include<conio.h>
+
+int Strlen(char str[10], int Count)
+{
+	while (1)
+	{
+		Count++;
+		if (*(str+Count) == NULL)
+			break;
+	}
+	return Count;
+}
+
+void main()
+{
+	int Count = 0;
+	char str[10] = "Hello";
+
+	printf("%s 문자열의 길이 : %d\n", str, Count = Strlen(str, Count));
+	
+}

@@ -1,0 +1,113 @@
+#include<stdio.h>
+#include<conio.h> 
+#pragma warning(disable : 4996)
+
+//다중 for 문 연습문제 1번 구구단 출력하기
+/*
+void main()
+{
+	int a, b;
+	for (int i = 0; i <= 9; i++)
+	{
+		
+		for (int j = 2; j <= 9; j++)
+		{
+			if (i == 0)
+			{
+				printf("====%d단====\t", j);
+				
+			}
+
+			else
+			{
+				printf("%d x %d = %d\t", j, i, i*j);
+			}
+			if (j == 9)
+				printf("\n");
+
+
+		}
+
+
+	}
+
+
+
+	getch();
+
+
+}
+*/
+
+//다중 for 문 연습문제 2번 삼각형그리기
+/*
+void main()
+{
+	int high;
+	printf("높이 입력 :");
+	scanf("%d", &high);
+	
+	for (int i = 1; i <= high; i++)
+	{
+		for (int j = 1; j <= i; j++)
+		{
+			printf("@");
+			//별모양 대신 @
+			if (j == i)
+				printf("\n");
+		}
+
+	}
+
+	getch();
+}
+*/
+
+//다중 for 문 연습문제 3번 별상자그리기
+
+void main()
+{
+	int garo, sero;
+	printf("가로와 세로를 입력하시오 :");
+
+	scanf("%d%d", &garo, &sero);
+
+	for (int i = 1; i <= sero; i++)
+	{
+		if (i == 1 || i == sero)
+		{
+			for (int j = 1; j <= garo; j++)
+			{
+
+				printf("@");
+
+				if (j == garo)
+					printf("\n");
+
+			}
+		}
+		else
+			for (int j = 1; j <= garo; j++)
+			{
+				if (j == 1 || j == garo)
+					printf("@");
+				else
+					printf("\ ");
+			
+
+				if (j == garo)
+					printf("\n");
+
+			}
+
+
+
+
+	}
+
+	getch();
+
+
+}
+
+

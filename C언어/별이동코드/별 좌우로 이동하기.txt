@@ -1,0 +1,146 @@
+#include<stdio.h>
+#include<Windows.h>
+#include<conio.h>
+
+#define SIZE 10
+#define STAR 1
+#define STOPSTAR 2
+#define NULL 0
+#define SPEED 100
+#define COUNTMAX 10
+#define COUNTSTART 1
+
+
+void Draw(int Map[][SIZE])
+{
+	system("cls");
+	for (int y = NULL;  y <  SIZE;  y++)
+	{
+		for (int x = NULL;  x < SIZE;  x++)
+		{
+			if (Map[y][x] == STAR || Map[y][x] == STOPSTAR)
+				printf("¡Ù");
+			else
+				printf(" ");
+		}
+		printf("\n");
+	}
+	printf("º° ¸ØÃß±â = d");
+}
+
+void Update2(int Map[][SIZE])
+{
+
+	for (int y = SIZE -1; y >= NULL;  y--)
+	{
+		for (int x = SIZE -1; x >= NULL;  x--)
+		{
+			if (Map[y][x] == STAR)
+			{
+		
+				if (x + 1 < SIZE && x > NULL)
+					Map[y][x + 1] = STAR;
+				else
+				{
+					
+					return;
+				}
+				Map[y][x] = NULL;
+			}
+
+		}
+	}
+}
+
+void Update(int Map[][SIZE])
+{
+	for (int y = NULL;  y < SIZE;  y++)
+	{
+		for (int x = NULL;  x < SIZE;  x++)
+		{
+			if (Map[y][x] == STAR)
+			{
+				if (x - 1 <= NULL)
+				{
+				
+					return;
+				}
+				else
+					Map[y][x - 1] = STAR;
+
+				Map[y][x] = NULL;
+			}
+		
+		}
+	}
+}
+
+void Stop(int Map[][SIZE], int y)
+{
+	for (int x = NULL;  x < SIZE;  x++)
+	{
+		if (Map[y][x] == STAR)
+		{
+			Map[y][x] = STOPSTAR;
+			return;
+		}
+	}
+}
+
+void main()
+{
+	int a = COUNTSTART,  b = COUNTMAX;
+
+	int Mapy = 10;
+	int Map[SIZE][SIZE] = { NULL };
+	char ch;
+	
+	for (int y = NULL;  y < SIZE;  y++)
+	{
+		for (int x = NULL; x < SIZE; x++)
+		{
+			if (x == SIZE-1)
+				Map[y][x] = STAR;
+		}
+	}
+	printf("show star?\n");
+	system("pause");
+	system("cls");
+
+	while (1)
+	{
+		
+		if (b == COUNTMAX)
+		{
+			Update(Map);
+			a++;
+			if (a == COUNTMAX)
+				b = COUNTSTART;
+		}
+	
+			if (a == COUNTMAX)
+			{
+				Update2(Map);
+				b++;
+				if (b == COUNTMAX)
+					a = COUNTSTART;
+			}
+
+			
+		if (kbhit())
+		{
+			ch = getch();
+			if (ch == 'd' || ch == 'D')
+			{
+				Mapy--;
+				Stop(Map, Mapy);
+			}
+		}
+	
+		Draw(Map);
+		Sleep(SPEED);
+	}
+
+}
+
+

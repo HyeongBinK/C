@@ -1,0 +1,118 @@
+#include<stdio.h>
+#include<conio.h>
+#define Size 10
+#define Data { 10,17,3,9,37,10,8,9,13,21 }
+
+
+void Print(int arr[])
+{
+	for (int i = 0; i < Size; i++)
+	{
+		printf("%d", arr[i]);
+		if (i != 9)
+			printf(",");
+
+	}
+}
+
+
+void holjjaksum(int arr[], int evenodd)
+{
+	int sum = 0;
+
+
+	
+	printf("È¦¼ö ¹ø¤Š ¿ø¼Ò:");
+	for (int i = 0; i < Size; i++)
+	{
+		if (i % 2 == evenodd)
+		{
+			printf("%d", arr[i]);
+			if (i != 9)
+				printf(",");
+			sum += arr[i];
+		}
+	}
+	printf("\n");
+	printf("È¦¼ö ¹ø¤Š ÃÑÇÕ : %d\n", sum);
+
+	sum = 0;
+	printf("Â¦¼ö ¹ø¤Š ¿ø¼Ò:");
+	for (int i = 0; i < Size; i++)
+	{
+		if (i % 2 != evenodd)
+		{
+			printf("%d", arr[i]);
+			if (i != 8)
+				printf(",");
+
+			sum += arr[i];
+		}
+	}
+	printf("\n");
+	printf("Â¦¼ö ¹ø¤Š ÃÑÇÕ : %d\n", sum);
+}
+
+void holjaksum(int arr[])
+{
+
+
+}
+
+void main()
+{
+	int temp, sum = 0;
+
+	printf("1¹ø ¹®Á¦\n");
+	int Arr[Size] = Data;
+	Print(Arr);
+	printf("\n");
+	printf("\n");
+	printf("2¹ø ¹®Á¦\n");
+	int invert_Arr[Size] = Data;
+
+	for (int i = 0; i < Size; i++)
+	{
+		if (i < Size / 2)
+		{
+			temp = invert_Arr[i];
+			invert_Arr[i] = invert_Arr[9 - i];
+			invert_Arr[9 - i] = temp;
+		}
+	}
+	printf("Invert_Arr :\ ");
+
+	Print(invert_Arr);
+
+	printf("\n");
+	printf("Arr :\ ");
+	Print(Arr);
+	printf("\n");
+	printf("\n");
+	printf("3¹ø ¹®Á¦\n");
+	holjjaksum(Arr, 1);
+	printf("\n");
+
+	printf("4¹ø ¹®Á¦\n");
+	printf("Arr :\ ");
+	Print(Arr);
+	printf("\n");
+	int Sort_Arr[Size] = Data;
+
+	for (int i = 0; i < Size; i++)
+	{
+		for (int j = i + 1; j < Size; j++)
+		{
+			if (Sort_Arr[i] < Sort_Arr[j])
+			{
+				temp = Sort_Arr[i];
+				Sort_Arr[i] = Sort_Arr[j];
+				Sort_Arr[j] = temp;
+			}
+		}
+	}
+	printf("Sort_Arr :\ ");
+	Print(Sort_Arr);
+
+	getch();
+}

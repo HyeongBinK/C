@@ -1,0 +1,193 @@
+#include<stdio.h>
+#include<conio.h> // 콘손입출력 헤더파일( getch(),putch() )
+#include<Windows.h> //system("cls"):화면청소, system("pause"): 계속하시려면 아무키나 입력하시오
+#pragma warning(disable : 4996)
+#define TRUE 1
+#define FALSE 0
+#define ESC 27
+
+
+// while 문 연습문제 1번
+/*
+void main()
+{
+	int a = 0, b = 0, sum = 0;
+	while(1)
+	{
+		printf("1~20사이 수 입력 :");
+		scanf("%d", &a);
+		if (a >= 1 && a <= 20)
+			break;
+		printf("다시입력");
+
+	}
+	while (b <= a)
+	{
+		sum += b;
+		b++;
+	}
+
+	printf("1~%d 누적합계 : %d", a, sum);
+
+	getch();
+}
+*/
+
+//while 문 연습문제 2번
+
+/*
+int main() //연습삼아 int 문 써봄
+//void main()
+{
+	int a = 1;
+
+	while (1)
+	{
+		if (a <= 5)
+		{
+			printf("Hello Bro\n");
+			a++;
+		}
+
+		else break;
+	}
+
+	getch();
+
+
+	return 0;//void 문시 없어도 됨
+}
+
+*/
+//while문 연습문제 3번 
+/*
+void main()
+{
+	int a=1, sum=0;
+	
+	
+	
+	while (1)
+	{
+		if (a == 0)
+			break;
+
+		else if (a != 0)
+		{
+			printf("정수 반복 입력(0입력시 종료)");
+			scanf("%d", &a);
+
+			sum +=a;
+		}
+
+
+		
+	}
+	printf("최종합계 = %d", sum);
+
+	getch();
+}
+
+*/
+
+
+
+//while문 연습문제 4번 소수인지판별하는 코드작성
+/*
+void main()
+{
+	int a, i=2;
+	printf("한 숫자 입력:");
+	scanf("%d", &a);
+
+	while (a >= i)
+	{
+		if (i == a)
+		{
+			printf("%d는 소수이다",a);
+			break;
+		}
+
+		else if (a % i == 0)
+		{
+			printf("%d는 소수가 아니다", a);
+			break;
+		}
+		else if (a % i != 0)
+			i++;
+
+			}
+	getch();
+}
+*/
+
+//while문 연습문제 5번 입력된수 거꾸로 출력하기 
+
+/*
+void main()
+{
+
+	int a;
+	printf("한정수 입력:");
+	scanf("%d", &a);
+
+	while (1)
+	{
+
+		if (a >= 10)
+		{
+			printf("%d", a % 10);
+			a = a / 10;
+
+
+		}
+		else if (a < 10)
+			
+			break;
+		
+	}
+	printf("%d", a % 10);
+
+	getch();
+
+
+}
+*/
+
+//while문 연습문제 6번 입력받은정수 각자리 합계 출력하기
+/*
+void main()
+{
+
+	int a, sum=0;
+	printf("한정수 입력:");
+	scanf("%d", &a);
+
+	while (1)
+	{
+
+		if (a >= 10)
+		{
+			if ((a / 10) != 0)
+				sum += a % 10;
+				
+
+			
+
+			a = a / 10;
+
+
+		}
+		else if (a < 10)
+
+			break;
+	
+	}
+	
+	
+	printf("각자리수 합계 : %d", sum+ (a%10));
+	getch();
+
+
+}
+*/

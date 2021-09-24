@@ -1,0 +1,41 @@
+#include<stdio.h>
+#include<conio.h>
+//#include<string.h>
+
+#define NULL 0
+
+
+int strcpy(char Name[10], char My_Name[10])
+{
+	int i = 0;
+	while (1)
+	{
+		*(Name+i) = *(My_Name+i);
+		
+		if (*(My_Name + i) == NULL)
+			break;
+		else 
+			i++;
+	}
+	return Name[10];
+}
+
+
+
+
+
+
+void main()
+{
+		char Name[10];
+		char My_Name[10] = "JungHo";
+
+		Name[10] = strcpy(Name, My_Name);
+        
+		
+		printf("Name : %s\n", Name);
+		printf("My_Name : %s\n", My_Name);
+}
+
+
+

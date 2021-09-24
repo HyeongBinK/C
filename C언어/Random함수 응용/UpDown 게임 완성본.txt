@@ -1,0 +1,161 @@
+#include<stdio.h>
+#include<stdlib.h> // rand 함수류 필요 헤더파일
+#include<conio.h>
+#include<time.h>
+
+
+void main()
+{
+	int RNum;
+	int Select1, Select2;
+	int Turn = 10;
+	int TurnCount = 0;
+	int MaxRange = 100;
+	int MinRange = 1;
+	int Answer;
+	int BreakNum = 0;
+
+	srand((unsigned)time(NULL));
+
+	while (1)
+	{
+		system("cls");
+
+		printf("=======UpDown=======\n");
+		printf("1. 게임시작\n");
+		printf("2. 범위설정\n");
+		printf("3. 종료\n");
+		printf("입력 :");
+
+		scanf("%d", &Select1);
+
+
+
+		switch (Select1)
+		{
+		case 1:
+
+			TurnCount = Turn;
+
+			do
+			{
+				RNum = (rand() % MaxRange) + 1;
+			} 
+			while (RNum > MinRange);
+
+			while (1)
+			{
+				system("cls");
+				printf("범위 : %d~%d\n", MinRange, MaxRange);
+				printf("제한 Turn : %d\n", Turn);
+
+				Answer = 0;
+				printf("=======%d턴=======\n", Turn + 1 - TurnCount);
+				printf("입력 :");
+				scanf("%d", &Answer);
+
+				if (Answer > RNum)
+				{
+					printf("Down!!\n");
+					TurnCount--;
+					system("pause");
+
+				}
+
+				else if (Answer < RNum)
+				{
+					printf("Up!!\n");
+					TurnCount--;
+					system("pause");
+
+				}
+
+				else if (Answer == RNum)
+				{
+					system("cls");
+					printf("정답!!\a\a\b");
+					printf("턴수 : %d\n", Turn + 1 - TurnCount);
+					system("pause");
+					break;
+
+				}
+
+				if (TurnCount == 0)
+				{
+					system("cls");
+					printf("GaneOver : Turn수 초과!!\a\a\n");
+					system("pause");
+					break;
+				}
+			}
+
+			break;
+
+
+		case 2:
+			while (1)
+			{
+				system("cls");
+				printf("=======게임 설정=======\n");
+				printf("1. 최대,최소범위 설정\n");
+				printf("2. 최대 Turn수 설정\n");
+				printf("3. 돌아가기\n");
+				printf("입력: ");
+				scanf("%d", &Select2);
+
+				switch (Select2)
+				{
+				case 1:
+
+					while (1)
+					{
+						system("cls");
+						printf("<현재 : %d>", MinRange); printf("최소 값 변경 :"); scanf("%d", &MinRange);
+						printf("<현재 : %d>", MaxRange); printf("최대 값 변경 :"); scanf("%d", &MaxRange);
+						if (MinRange >= MaxRange)
+						{
+							printf("오류 : 최소값이 최대값 보다 크거나 같습니다 다시 입력해주세요.\n");
+							system("pause");
+						}
+						else break;
+
+					}
+
+					break;
+
+				case 2:
+
+					while (1)
+					{
+						system("cls");
+						printf("<현재 : %d>", Turn); printf("Turn 최대 값 변경 :"); scanf("%d", &Turn);
+						if (Turn <= 0)
+						{
+							printf("오류 : 최대턴수가 0보다 작거나 같습니다 다시 입력해주세요.\n");
+							system("pause");
+						}
+						else break;
+
+					}
+
+					break;
+
+				case 3:
+					BreakNum = 99;
+					break;
+				}
+				if (BreakNum == 99)
+				{
+					break;
+					BreakNum = 0;
+				}
+			}
+
+			break;
+
+		case 3:
+			return;
+
+		}
+	}
+}

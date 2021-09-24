@@ -1,0 +1,139 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
+#include<Windows.h>
+#include<conio.h>
+
+#define LONG 10
+#define SIZE 8
+#define NULL 0
+#define TRUE 1
+
+void Upper(char *str)
+{
+	int i = 0;
+	while (TRUE)
+	{
+
+		if (*(str + i) >= 'a' && *(str + i) <= 'z')
+		{
+			*(str + i) -= 32;
+			 i++;
+		}
+
+		if (*(str + i) == NULL)
+			break;
+	}
+}
+
+void WhoIsBig(int num1, int num2, int *Big)
+{
+	if (num1 >= num2)
+		*Big=num1;
+	else 
+		*Big=num2;
+}
+
+void NooJukSum(int Num, int *Sum)
+{
+	if (Num >= 0)
+	{
+		for (int i = 0; i <= Num; i++)
+		*Sum += i;
+	}
+	else
+	{
+		for (int i = 0; i >= Num; i--)
+			*Sum += i;
+	}
+}
+
+void AscendingOrder(int *PalNum)
+{
+
+	
+	for (int i = 0; i < SIZE; i++)
+	{
+		for (int j = 0; j < i; j++)
+		{
+			if (*(PalNum+i) < *(PalNum+j))
+			{
+				int tmp = *(PalNum+i);
+				*(PalNum+i) = *(PalNum+j);
+				*(PalNum+j) = tmp;
+			}
+		}
+
+	}
+
+
+
+}
+
+void Print(int *PalNum)
+{
+	for (int i = 0; i < SIZE; i++)
+	{
+		printf("%d  ", PalNum[i]);
+	}
+
+}
+void main()
+{
+	int num1, num2, Big, Num, Sum=0;
+	int PalNum[SIZE] = { 0 };
+
+	char string[LONG];
+
+	printf("1.문자열을 입력하시오 :");
+	scanf("%s", string);
+
+	printf("함수호출전 = %s\n", string);
+
+	
+		Upper(string);
+	
+	printf("함수호출후 = %s\n", string);
+	
+	printf("2. 두정수를 입력하시오 :");
+
+	scanf("%d%d", &num1, &num2);
+
+	WhoIsBig(num1, num2, &Big);
+
+	printf("%d 와<과>%d중 큰 수는 %d\n", num1, num2, Big);
+
+	printf("3. 정수를 입력하시오 :");
+
+	scanf("%d", &Num);
+
+	NooJukSum(Num, &Sum);
+
+	printf("0부터 %d 까지의 총합 : %d\n", Num, Sum);
+
+	printf("4. 오름차순 정렬 :\n");
+
+	for (int i = 0; i < SIZE; i++)
+	{
+		printf("[%d]번쨰 정수 입력 :", i);
+		scanf("%d", &PalNum[i]);
+	}
+	
+	printf("정렬전 :");
+	Print(PalNum);
+
+	printf("\n");
+
+	AscendingOrder(PalNum);
+	
+	
+	printf("정렬후 :");
+	Print(PalNum);
+
+	
+	getch();
+
+}
+
+
+
